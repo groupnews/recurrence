@@ -20,6 +20,8 @@ class Recurrence_
         @options    = options
         @date       = options[:starts]
         @finished   = false
+        
+        set_default_on_value
 
         validate
         if @options[:interval] <= 0
@@ -66,6 +68,20 @@ class Recurrence_
 
       private def initialized?
         !!@start_date
+      end
+      
+      private def set_default_on_value
+      	return if @options[:every].to_sym == :day
+      	
+      	on = @options.dig(:on)
+      	return if on.is_a?(Integer) or on.is_a?(Symbol) or (on.is_a?(Array) and on.any?)
+      	
+      	case @options[:every].to_sym
+      	when :year
+      		@options[:on] = [1, 1] # January 1
+      	else
+      		@options[:on] = 1 # First day of the month or week.
+      	end
       end
 
       private def prepare!
