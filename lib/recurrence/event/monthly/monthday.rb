@@ -46,10 +46,10 @@ class Recurrence_
         end
 
         def valid_shift_options?
-          if @options[:shift] && @options[:on].length > 1
-            raise ArgumentError,
-                  "Invalid options. Unable to use :shift with multiple :on days"
-          end
+          return unless @options[:shift] && @options[:on].length > 1
+
+          raise ArgumentError,
+                "Invalid options. Unable to use :shift with multiple :on days"
         end
 
         def shift_to(date)

@@ -42,10 +42,10 @@ class Recurrence_
           @options[:weekday] =
             valid_weekday_or_weekday_name?(@options[:weekday])
 
-          if @options[:interval].is_a?(Symbol)
-            valid_interval?(@options[:interval])
-            @options[:interval] = INTERVALS[@options[:interval]]
-          end
+          return unless @options[:interval].is_a?(Symbol)
+
+          valid_interval?(@options[:interval])
+          @options[:interval] = INTERVALS[@options[:interval]]
         end
 
         def shift_to(date)
