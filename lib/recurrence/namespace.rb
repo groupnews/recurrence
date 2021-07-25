@@ -34,7 +34,12 @@ class Recurrence_
   #   #=> <Date>
   #
   def self.default_starts_date
-    @default_starts_date.call
+    case @default_starts_date
+    when Proc
+      @default_starts_date.call
+    else
+      Date.current
+    end
   end
 
   # Set the default starting date globally.
