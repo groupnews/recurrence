@@ -132,4 +132,16 @@ class YearlyRecurringTest < Minitest::Test
     assert r.events.include?("#{Time.now.year + 2}-12-31".to_date)
     refute r.events.include?("#{Time.now.year + 3}-12-31".to_date)
   end
+
+  test "allows multiple days per year" do
+    r = recurrence(
+      every: :year,
+      on: [[1, 15], [6, 15]],
+      starts: "2021-06-01"
+    )
+    assert_equal "2022-01-15", r.events[0].to_s
+    assert_equal "2022-06-15", r.events[1].to_s
+    assert_equal "2023-01-15", r.events[2].to_s
+    assert_equal "2023-06-15", r.events[3].to_s
+  end
 end

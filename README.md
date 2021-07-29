@@ -54,6 +54,7 @@ r = Recurrence.new(every: :month, on: :last,  weekday: :friday, repeat: 3)
 # Yearly
 r = Recurrence.new(every: :year, on: [7, 4]) # => [month, day]
 r = Recurrence.new(every: :year, on: [10, 31], interval: 3)
+r = Recurrence.new(every: :year, on: [[1, 15], [6, 15]])  # => [[month, day], [month, day]]
 r = Recurrence.new(every: :year, on: [:jan, 31])
 r = Recurrence.new(every: :year, on: [:january, 31])
 r = Recurrence.new(every: :year, on: [10, 31], repeat: 3)

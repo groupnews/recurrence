@@ -105,23 +105,23 @@ class RecurrenceTest < Minitest::Test
 
     assert_equal "2008-01-01", r.next!.to_s
   end
-  
+
   test "defaults to first day of the year if :on is not defined on a yearly recurrence" do
     r = recurrence(every: :year, starts: "2008-06-01")
-    
+
     assert_equal "2009-01-01", r.next!.to_s
-  end  
-  
+  end
+
   test "defaults to first day of the month if :on is not defined on a monthly recurrence" do
     r = recurrence(every: :month, starts: "2008-06-15")
-    
+
     assert_equal "2008-07-01", r.next!.to_s
-  end  
-  
+  end
+
   test "defaults to first day of the week if :on is not defined on a weekly recurrence" do
-  	# Jan 1, 2008 was a Tuesday. Jan 7 is the following Monday
+    # Jan 1, 2008 was a Tuesday. Jan 7 is the following Monday
     r = recurrence(every: :week, starts: "2008-01-01")
-    
+
     assert_equal "2008-01-07", r.next!.to_s
   end
 end
