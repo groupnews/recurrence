@@ -95,6 +95,13 @@ class Recurrence_
         # Inject custom validations
       end
 
+      # Handles parsing a day out of the :last option
+      private def parse_day(year, month, day)
+        return Date.civil(year, month, -1).day if day.to_s == "last"
+
+        day
+      end
+
       # Common validation for inherited classes.
       #
       private def valid_month_day?(day)

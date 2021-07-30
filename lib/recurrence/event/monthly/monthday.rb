@@ -6,11 +6,8 @@ class Recurrence_
       module Monthday
         def advance(date, interval = @options[:interval])
           if initialized? && @_day_count > @_day_pointer += 1
-            @options[:handler].call(
-              @options[:on][@_day_pointer],
-              date.month,
-              date.year
-            )
+            next_year  = date.year
+            next_month = date.month
           else
             @_day_pointer = 0
 
@@ -19,18 +16,20 @@ class Recurrence_
 
             next_year  = date.year + raw_month.div(12)
             next_month = (raw_month % 12) + 1 # change back to ruby interval
-
-            @options[:handler].call(
-              @options[:on][@_day_pointer],
-              next_month,
-              next_year
-            )
           end
+          next_day = parse_day(next_year, next_month,
+                               @options[:on][@_day_pointer])
+
+          @options[:handler].call(
+            next_day,
+            next_month,
+            next_year
+          )
         end
 
         def validate_and_prepare!
           @options[:on] = Array.wrap(@options[:on]).map do |day|
-            valid_month_day?(day)
+            valid_month_day?(day) unless day.to_s == "last"
             day
           end.sort
 

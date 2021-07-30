@@ -39,7 +39,7 @@ class Recurrence_
       end
 
       private def validate_date(month, day)
-        valid_month_day?(day)
+        valid_month_day?(day) unless day.to_s == 'last'
 
         if month.is_a?(Numeric)
           valid_month?(month)
@@ -68,11 +68,11 @@ class Recurrence_
             next_year = date.year + interval
           end
           next_month = @options[:on][@_date_pointer].first
-          next_day   = @options[:on][@_date_pointer].last
+          next_day   = parse_day(next_year, next_month, @options[:on][@_date_pointer].last)
         else
           next_year  = date.year + interval
           next_month = @options[:on].first
-          next_day   = @options[:on].last
+          next_day   = parse_day(next_year, next_month, @options[:on].last)
         end
         @options[:handler].call(next_day, next_month, next_year)
       end
