@@ -101,6 +101,38 @@ class MonthlyRecurringDayTest < Minitest::Test
     assert_equal "2009-02-28", r.events[11].to_s
   end
 
+  test "uses :last correctly with multiple days defined" do
+    starts = Date.parse("2008-03-01")
+
+    r = recurrence(
+      every: :month,
+      on: [15, 20, "last"],
+      starts: starts
+    )
+    assert_equal "2008-03-15", r.events[0].to_s
+    assert_equal "2008-03-20", r.events[1].to_s
+    assert_equal "2008-03-31", r.events[2].to_s
+    assert_equal "2008-04-15", r.events[3].to_s
+    assert_equal "2008-04-20", r.events[4].to_s
+    assert_equal "2008-04-30", r.events[5].to_s
+  end
+
+  test "sorts the recurrences correctly with multiple days defined" do
+    starts = Date.parse("2008-03-01")
+
+    r = recurrence(
+      every: :month,
+      on: [20, :last, 15],
+      starts: starts
+    )
+    assert_equal "2008-03-15", r.events[0].to_s
+    assert_equal "2008-03-20", r.events[1].to_s
+    assert_equal "2008-03-31", r.events[2].to_s
+    assert_equal "2008-04-15", r.events[3].to_s
+    assert_equal "2008-04-20", r.events[4].to_s
+    assert_equal "2008-04-30", r.events[5].to_s
+  end
+
   test "uses interval" do
     starts = Date.parse("2008-01-31")
     r = recurrence(

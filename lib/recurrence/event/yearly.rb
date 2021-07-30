@@ -25,7 +25,12 @@ class Recurrence_
             month = date.first
             day = date.last
             validated_dates << validate_date(month, day)
-            @options[:on] = validated_dates
+          end
+
+          @options[:on] = validated_dates.sort_by do |date|
+            # Using 32 because that'll guarantee its sorted last compared to other days in the month
+            day = date.last.to_s == "last" ? 32 : date.last
+            [date.first, day]
           end
         else
           month = @options[:on].first
@@ -39,7 +44,7 @@ class Recurrence_
       end
 
       private def validate_date(month, day)
-        valid_month_day?(day) unless day.to_s == 'last'
+        valid_month_day?(day) unless day.to_s == "last"
 
         if month.is_a?(Numeric)
           valid_month?(month)
@@ -68,7 +73,8 @@ class Recurrence_
             next_year = date.year + interval
           end
           next_month = @options[:on][@_date_pointer].first
-          next_day   = parse_day(next_year, next_month, @options[:on][@_date_pointer].last)
+          next_day   = parse_day(next_year, next_month,
+                                 @options[:on][@_date_pointer].last)
         else
           next_year  = date.year + interval
           next_month = @options[:on].first

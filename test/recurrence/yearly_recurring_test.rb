@@ -144,7 +144,7 @@ class YearlyRecurringTest < Minitest::Test
     assert_equal "2023-01-15", r.events[2].to_s
     assert_equal "2023-06-15", r.events[3].to_s
   end
-  
+
   test "uses :last correctly" do
     starts = Date.parse("2008-03-01")
 
@@ -157,13 +157,13 @@ class YearlyRecurringTest < Minitest::Test
     assert_equal "2009-07-31", r.events[1].to_s
     assert_equal "2010-07-31", r.events[2].to_s
   end
-    
+
   test "uses :last correctly when multiple dates are defined" do
     starts = Date.parse("2008-03-01")
 
     r = recurrence(
       every: :year,
-      on: [[7, 'last'], [12, :last]],
+      on: [[7, "last"], [12, :last]],
       starts: starts
     )
     assert_equal "2008-07-31", r.events[0].to_s
@@ -173,7 +173,7 @@ class YearlyRecurringTest < Minitest::Test
     assert_equal "2010-07-31", r.events[4].to_s
     assert_equal "2010-12-31", r.events[5].to_s
   end
-  
+
   test ":last handles leap years correctly" do
     starts = Date.parse("2018-02-01")
 
@@ -186,5 +186,21 @@ class YearlyRecurringTest < Minitest::Test
     assert_equal "2019-02-28", r.events[1].to_s
     assert_equal "2020-02-29", r.events[2].to_s # Leap year
     assert_equal "2021-02-28", r.events[3].to_s
+  end
+
+  test "sorts dates correctly when multiple dates are defined" do
+    starts = Date.parse("2008-03-01")
+
+    r = recurrence(
+      every: :year,
+      on: [[12, :last], [12, 1], [7, 15]],
+      starts: starts
+    )
+    assert_equal "2008-07-15", r.events[0].to_s
+    assert_equal "2008-12-01", r.events[1].to_s
+    assert_equal "2008-12-31", r.events[2].to_s
+    assert_equal "2009-07-15", r.events[3].to_s
+    assert_equal "2009-12-01", r.events[4].to_s
+    assert_equal "2009-12-31", r.events[5].to_s
   end
 end

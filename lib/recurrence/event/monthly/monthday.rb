@@ -28,10 +28,13 @@ class Recurrence_
         end
 
         def validate_and_prepare!
-          @options[:on] = Array.wrap(@options[:on]).map do |day|
+          days = Array.wrap(@options[:on]).map do |day|
             valid_month_day?(day) unless day.to_s == "last"
             day
-          end.sort
+          end
+
+          @options[:on] =
+            days.grep(Integer).sort + days.grep(String) + days.grep(Symbol)
 
           valid_shift_options?
 
